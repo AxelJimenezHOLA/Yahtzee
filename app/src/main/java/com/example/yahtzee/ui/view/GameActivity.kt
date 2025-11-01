@@ -103,7 +103,13 @@ fun GameScreen(soundMediaPlayer: MediaPlayer, viewModel: GameViewModel) {
 	val gameFinished by viewModel.gameFinished.collectAsState()
 	LaunchedEffect(gameFinished) {
 		if (gameFinished) {
-			Toast.makeText(context, "Winner: ${viewModel.getWinner()?.name} with ${viewModel.getWinner()?.score} points!", Toast.LENGTH_SHORT).show()
+			val winnerName = viewModel.getWinner()?.name
+			val winnerScore = viewModel.getWinner()?.score
+			Toast.makeText(
+				context,
+				"Winner: $winnerName with $winnerScore points!",
+				Toast.LENGTH_SHORT
+			).show()
 			val intent = Intent(context, MainActivity::class.java)
 			context.startActivity(intent)
 			activity?.finish()
@@ -119,8 +125,11 @@ fun GameScreen(soundMediaPlayer: MediaPlayer, viewModel: GameViewModel) {
 				),
 				title = {
 					Column {
-						Text("Round ${viewModel.round}")
-						Text("Turn of ${viewModel.players.getOrNull(viewModel.currentPlayerIndex)?.name ?: "N/A"}")
+						val roundNumber = viewModel.round
+						val currentPlayerName = viewModel.players
+							.getOrNull(viewModel.currentPlayerIndex)?.name
+						Text("Round $roundNumber")
+						Text("Turn of $currentPlayerName")
 					}
 				}
 			)
